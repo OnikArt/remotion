@@ -35,11 +35,20 @@ const Poster: React.FC<{after?: boolean; x?: number; y?: number; w?: number}> = 
 };
 
 const Hook: React.FC<{f: number}> = ({f}) => <Stage dark>
-  <div style={{position: 'absolute', left: 76, top: 460, fontSize: 75, fontWeight: 700, lineHeight: .96, letterSpacing: -3, opacity: move(f, 0, 18, .82, 1)}}>ТВОЙ ДИЗАЙН</div>
-  <div style={{position: 'absolute', left: 68, top: 610, fontSize: 137, fontWeight: 800, lineHeight: .94, letterSpacing: -7, opacity: move(f, 8, 36, .75, 1)}}>ВЫГЛЯДИТ</div>
-  <div style={{position: 'absolute', left: 60, top: 785, fontSize: 183, fontWeight: 800, lineHeight: .9, letterSpacing: -12, color: '#f3d8bb', opacity: move(f, 22, 54, .7, 1), translate: `0 ${move(f, 22, 54, 18, 0)}px`}}>ДЁШЕВО.</div>
-  <div style={{position: 'absolute', left: 78, top: 1055, width: 780, height: 3, background: '#a86d55', scale: `${move(f, 35, 68)} 1`, transformOrigin: 'left center'}} />
-  <div style={{position: 'absolute', left: 78, top: 1113, fontSize: 52, fontWeight: 600, letterSpacing: -1, opacity: move(f, 46, 74, .7, 1)}}>И ВОТ ПОЧЕМУ</div>
+  <div style={{position: 'absolute', left: 80, top: 205, fontSize: 84, fontWeight: 700, letterSpacing: -4, lineHeight: .94, color: '#fff9ef'}}>ТВОЙ ДИЗАЙН</div>
+  <div style={{position: 'absolute', left: 77, top: 330, fontSize: 140, fontWeight: 800, letterSpacing: -8, lineHeight: .92, color: 'white'}}>ВЫГЛЯДИТ</div>
+  <div style={{position: 'absolute', left: 70, top: 530, width: 940, height: 235, borderRadius: 22, background: '#ffe500', rotate: '-3.5deg', boxShadow: '0 22px 40px #11030055', scale: move(f, 0, 28, .98, 1)}} />
+  <div style={{position: 'absolute', left: 98, top: 538, fontSize: 170, fontWeight: 800, letterSpacing: -11, lineHeight: 1, color: '#100c06', rotate: '-3.5deg'}}>ДЁШЕВО.</div>
+  <div style={{position: 'absolute', left: 365, top: 752, width: 550, height: 12, borderRadius: 8, background: '#ed260f', rotate: '-5deg'}} />
+  <div style={{position: 'absolute', left: 88, top: 818, fontSize: 56, fontWeight: 600, letterSpacing: -2, color: 'white'}}>И ВОТ ПОЧЕМУ</div>
+  <div style={{position: 'absolute', left: 86, top: 1055, width: 445, height: 490, rotate: '-6deg', translate: `0 ${move(f, 0, 45, 12, 0)}px`, borderRadius: 18, overflow: 'hidden', border: '4px solid #e4ad82', boxShadow: '0 25px 45px #0009'}}>
+    <Img src={src('poster_before.png')} style={{width: '100%', height: '100%', objectFit: 'contain'}} />
+  </div>
+  <div style={{position: 'absolute', left: 541, top: 962, width: 445, height: 595, rotate: '5deg', translate: `0 ${move(f, 0, 45, -10, 0)}px`, borderRadius: 18, overflow: 'hidden', border: '4px solid #f6d8b7', boxShadow: '0 28px 50px #000a'}}>
+    <Img src={src('poster_after.png')} style={{width: '100%', height: '100%', objectFit: 'contain'}} />
+  </div>
+  <div style={{position: 'absolute', left: 65, top: 990, width: 112, height: 112, borderRadius: '50%', display: 'grid', placeItems: 'center', background: '#e93227', color: 'white', fontSize: 83, fontWeight: 800, boxShadow: '0 10px 20px #0008'}}>×</div>
+  <div style={{position: 'absolute', left: 900, top: 917, width: 112, height: 112, borderRadius: '50%', display: 'grid', placeItems: 'center', background: '#18bd22', color: 'white', fontSize: 76, fontWeight: 800, boxShadow: '0 10px 20px #0008'}}>✓</div>
 </Stage>;
 
 // The rectangles use pixels in the approved 1199 × 1312 poster, measured on
@@ -53,10 +62,10 @@ const targets = {
 } as const;
 type Target = keyof typeof targets;
 const focus: {target: Target; start: number; end: number}[] = [
-  {target: 'newBadge', start: 140, end: 280},
-  {target: 'headline', start: 285, end: 450},
-  {target: 'features', start: 460, end: 610},
-  {target: 'orderButton', start: 615, end: 710},
+  {target: 'orderButton', start: 0, end: 135},
+  {target: 'features', start: 135, end: 215},
+  {target: 'headline', start: 215, end: 330},
+  {target: 'newBadge', start: 330, end: 430},
 ];
 const FocusHighlight: React.FC<{target: Target; opacity: number}> = ({target, opacity}) => {
   const {x, y, scale} = beforePlacement;
@@ -64,46 +73,68 @@ const FocusHighlight: React.FC<{target: Target; opacity: number}> = ({target, op
   if ('path' in geometry) return <svg viewBox="0 0 1199 1312" style={{position: 'absolute', left: x, top: y, width: 1199 * scale, height: 1312 * scale, opacity, overflow: 'visible', filter: 'drop-shadow(0 0 12px #fbe77b99)'}}><path d={geometry.path} fill="none" stroke="#fbe77b" strokeWidth="4" strokeLinejoin="round" /></svg>;
   return <>{geometry.boxes.map((box, index) => <div key={index} style={{position: 'absolute', left: x + box.x * scale, top: y + box.y * scale, width: box.w * scale, height: box.h * scale, border: '3px solid #fbe77b', borderRadius: 8, boxShadow: '0 0 0 4px #220a0955, 0 0 18px #fbe77b99', opacity, boxSizing: 'border-box'}} />)}</>;
 };
-const Before: React.FC<{f: number}> = ({f}) => {
+const PosterReveal: React.FC<{f: number}> = () => <Stage dark>
+  <div style={{position: 'absolute', left: 70, top: 250, fontSize: 44, fontWeight: 800, color: '#ffe500'}}>ИИ: ИСХОДНЫЙ ВАРИАНТ</div>
+  <Poster />
+</Stage>;
+
+const Problems: React.FC<{f: number}> = ({f}) => {
   const selected = focus.find((item) => f >= item.start && f < item.end);
   const opacity = selected ? Math.min(move(f, selected.start, selected.start + 16), move(f, selected.end - 16, selected.end, 1, 0)) : 0;
   return <Stage dark>
+    <div style={{position: 'absolute', left: 70, top: 250, fontSize: 44, fontWeight: 800, color: '#ffe500'}}>ИИ: ИСХОДНЫЙ ВАРИАНТ</div>
     <Poster />
     {selected && <FocusHighlight target={selected.target} opacity={opacity} />}
   </Stage>;
 };
 
-const BeforeParts: React.FC<{f: number}> = ({f}) => <div style={{position: 'absolute', left: beforePlacement.x, top: beforePlacement.y, width: 1199, height: 1312, scale: beforePlacement.scale, transformOrigin: 'top left', opacity: move(f, 170, 200)}}>
+const BeforeParts: React.FC<{f: number}> = ({f}) => <div style={{position: 'absolute', left: beforePlacement.x, top: beforePlacement.y, width: 1199, height: 1312, scale: beforePlacement.scale, transformOrigin: 'top left', opacity: move(f, 235, 280)}}>
   <AssetLayer name="logo_before.png" x={75} y={42} visibleWidth={385} />
   <AssetLayer name="headline_cold_before.png" x={50} y={110} visibleWidth={700} />
   <AssetLayer name="headline_latte_before.png" x={62} y={190} visibleWidth={1010} />
-  <div style={{opacity: 1 - move(f, 82, 138), translate: `${move(f, 82, 138, 0, 300)}px 0`}}><AssetLayer name="badge_new_before.png" x={765} y={10} visibleWidth={410} /></div>
-  <div style={{opacity: 1 - move(f, 140, 197), translate: `${move(f, 140, 197, 0, -260)}px 0`}}><AssetLayer name="label_gentle_taste_before.png" x={72} y={765} visibleWidth={500} /></div>
-  <div style={{opacity: 1 - move(f, 220, 280), translate: `0 ${move(f, 220, 280, 0, 230)}px`}}><AssetLayer name="button_order.png" x={220} y={1128} visibleWidth={770} /></div>
-  <div style={{position: 'absolute', left: 62, top: 474, width: 480, color: 'white', fontSize: 43, fontWeight: 750, lineHeight: 1.45, opacity: 1 - move(f, 215, 260), translate: `${move(f, 215, 260, 0, -65)}px 0`}}>
+  <div style={{opacity: 1 - move(f, 335, 405), translate: `${move(f, 335, 405, 0, 300)}px 0`}}><AssetLayer name="badge_new_before.png" x={765} y={10} visibleWidth={410} /></div>
+  <div style={{opacity: 1 - move(f, 390, 465), translate: `${move(f, 390, 465, 0, -260)}px 0`}}><AssetLayer name="label_gentle_taste_before.png" x={72} y={765} visibleWidth={500} /></div>
+  <div style={{opacity: 1 - move(f, 465, 555), translate: `0 ${move(f, 465, 555, 0, 230)}px`}}><AssetLayer name="button_order.png" x={220} y={1128} visibleWidth={770} /></div>
+  <div style={{position: 'absolute', left: 62, top: 474, width: 480, color: 'white', fontSize: 43, fontWeight: 750, lineHeight: 1.45, opacity: 1 - move(f, 285, 375), translate: `${move(f, 285, 375, 0, -65)}px 0`}}>
     {['Натуральный кофе', 'Освежающий вкус', 'Лёгкая текстура', 'Идеальный для лета'].map((line) => <div key={line} style={{display: 'flex', alignItems: 'start', gap: 22, whiteSpace: 'nowrap'}}><span style={{color: '#16ed08', fontSize: 62, fontWeight: 800, lineHeight: 1}}>✓</span><span>{line}</span></div>)}
   </div>
   <AssetLayer name="cup.png" x={560} y={205} visibleWidth={550} />
 </div>;
 
 const RemoveNoise: React.FC<{f: number}> = ({f}) => <Stage dark>
-  <div style={{opacity: 1 - move(f, 150, 185)}}><Poster /></div>
+  <div style={{opacity: 1 - move(f, 235, 280)}}><Poster /></div>
   <BeforeParts f={f} />
-  <div style={{position: 'absolute', left: 90, top: 1510, fontSize: 46, fontWeight: 700, opacity: move(f, 110, 155)}}>УБИРАЕМ ЛИШНЕЕ</div>
+  <div style={{position: 'absolute', left: 80, top: 164, fontSize: 39, fontWeight: 800, color: '#ffe500', opacity: move(f, 0, 55)}}>ИСПРАВЛЯЕМ ЗА 4 ШАГА</div>
+  <div style={{position: 'absolute', left: 80, top: 225, fontSize: 54, fontWeight: 800, opacity: move(f, 120, 175)}}>01 / УБИРАЕМ МУСОР</div>
 </Stage>;
 
-const Hierarchy: React.FC<{f: number}> = ({f}) => <Stage>
-  <div style={{position: 'absolute', left: 92, top: 340, fontSize: 42, fontWeight: 500, letterSpacing: 8, opacity: move(f, 10, 55)}}>ХОЛОДНЫЙ</div>
-  <div style={{position: 'absolute', left: 70, top: 510, fontSize: 290, lineHeight: 1, fontWeight: 800, letterSpacing: -18, translate: `${move(f, 0, 120, 230, 0)}px 0`}}>АЙС</div>
-  <div style={{position: 'absolute', left: 70, top: 930, fontSize: 235, lineHeight: 1, fontWeight: 800, letterSpacing: -14, translate: `${move(f, 70, 210, -350, 0)}px 0`}}>ЛАТТЕ</div>
-  <div style={{position: 'absolute', left: 94, top: 1325, width: 650, fontSize: 35, lineHeight: 1.2, fontWeight: 500, opacity: move(f, 170, 240)}}>НЕЖНЫЙ ВКУС<br />И ОСВЕЖАЮЩАЯ ЛЁГКОСТЬ</div>
-</Stage>;
+const Hierarchy: React.FC<{f: number}> = ({f}) => {
+  const active = f < 152 ? -1 : f < 252 ? 0 : f < 342 ? 1 : 2;
+  const notes = [
+    ['01', 'ОДИН ГЛАВНЫЙ ЗАГОЛОВОК'],
+    ['02', 'ПРОДУКТ В ЦЕНТРЕ ВНИМАНИЯ'],
+    ['03', 'ОСТАЛЬНОЕ — НА ВТОРОМ ПЛАНЕ'],
+  ];
+  return <Stage>
+    <div style={{position: 'absolute', left: 75, top: 174, fontSize: 52, fontWeight: 800, letterSpacing: -2}}>02 / ВЫСТРАИВАЕМ ИЕРАРХИЮ</div>
+    <div style={{position: 'absolute', left: 75, top: 350, fontSize: 29, fontWeight: 800, color: '#8e1b12'}}>ИИ: ИСХОДНЫЙ ВАРИАНТ</div>
+    <Img src={src('poster_before.png')} style={{position: 'absolute', left: 75, top: 420, width: 420, height: 420 * 1312 / 1199, objectFit: 'contain', boxShadow: '0 18px 36px #3a161538'}} />
+    <div style={{position: 'absolute', left: 545, top: 350, fontSize: 29, fontWeight: 800, color: wine, opacity: move(f, 0, 40)}}>ДИЗАЙН: ПОСЛЕ ДОРАБОТКИ</div>
+    <Img src={src('poster_after.png')} style={{position: 'absolute', left: 545, top: 420, width: 465, height: 465 * 1448 / 1086, objectFit: 'contain', boxShadow: '0 18px 36px #3a161538', opacity: move(f, 0, 40)}} />
+    <div style={{position: 'absolute', left: 75, top: 1105, width: 935, height: 3, background: wine, opacity: .5}} />
+    {notes.map(([number, label], i) => <div key={number} style={{position: 'absolute', left: 75, top: 1165 + i * 127, width: 935, height: 100, display: 'flex', alignItems: 'center', gap: 30, borderBottom: '1px solid #64181244', opacity: move(f, [152, 252, 342][i], [175, 275, 365][i], .15, 1)}}>
+      <span style={{fontSize: 50, fontWeight: 800, color: active === i ? '#ad351e' : wine}}>{number}</span>
+      <span style={{fontSize: 38, fontWeight: 800, letterSpacing: -1}}>{label}</span>
+    </div>)}
+  </Stage>;
+};
 
 // Individual approved cutouts assemble the hierarchy; the exact raster takes
 // over before the scene ends because some provided mattes contain background residue.
 const ComposeAfter: React.FC<{f: number}> = ({f}) => {
   const posterOpacity = move(f, 175, 270);
   return <Stage>
+    <div style={{position: 'absolute', left: 70, top: 132, fontSize: 46, fontWeight: 800, letterSpacing: -1}}>03 / ИСПРАВЛЯЕМ КОМПОЗИЦИЮ</div>
     <div style={{position: 'absolute', left: 60, top: 250, width: 1086, height: 1448, scale: .884, transformOrigin: 'top left', opacity: 1 - posterOpacity}}>
       <div style={{opacity: move(f, 10, 70)}}><AssetLayer name="logo_after.png" x={425} y={35} visibleWidth={235} /></div>
       <div style={{opacity: move(f, 50, 110)}}><AssetLayer name="headline_cold_after.png" x={150} y={170} visibleWidth={365} /></div>
@@ -118,23 +149,25 @@ const ComposeAfter: React.FC<{f: number}> = ({f}) => {
   </Stage>;
 };
 
-const After: React.FC<{f: number}> = ({f}) => <Stage>
-  <div style={{scale: move(f, 0, 500, 1.012, 1), transformOrigin: 'center 45%'}}><Poster after x={60} y={250} w={960} /></div>
+const BrandStyle: React.FC<{f: number}> = ({f}) => <Stage>
+  <div style={{position: 'absolute', left: 70, top: 125, fontSize: 48, fontWeight: 800}}>04 / ФИРМЕННЫЙ СТИЛЬ</div>
+  <div style={{opacity: move(f, 0, 35)}}><Poster after x={60} y={250} w={960} /></div>
+  <div style={{position: 'absolute', left: 80, top: 1660, display: 'flex', gap: 44, fontSize: 34, fontWeight: 800, opacity: move(f, 80, 140)}}><span>ЛОГОТИП</span><span>·</span><span>ШРИФТЫ</span><span>·</span><span>ОТСТУПЫ</span></div>
 </Stage>;
 
 const Compare: React.FC<{f: number}> = ({f}) => {
   const left = 65, top = 277, width = 950, height = 1267;
-  const split = linear(f, 15, 360, .025, .975);
+  const split = linear(f, 10, 175, .025, .975);
   const line = left + width * split;
   return <Stage>
     <div style={{position: 'absolute', left: 65, top: 183, fontSize: 48, fontWeight: 800}}>ПОСЛЕ</div>
     <div style={{position: 'absolute', right: 65, top: 183, fontSize: 48, fontWeight: 800}}>ДО</div>
     <div style={{position: 'absolute', left, top, width, height, background: '#27120e', overflow: 'hidden', boxShadow: '0 28px 65px #32120c55'}}>
-      <Img src={src('poster_before.png')} style={{position: 'absolute', inset: -35, width: width + 70, height: height + 70, objectFit: 'cover', filter: 'blur(35px)', opacity: .65}} />
-      <Img src={src('poster_before.png')} style={{position: 'absolute', inset: 0, width, height, objectFit: 'contain'}} />
-      <div style={{position: 'absolute', inset: 0, background: cream, clipPath: `inset(0 ${100 - split * 100}% 0 0)`}}>
-        <Img src={src('poster_after.png')} style={{position: 'absolute', inset: -35, width: width + 70, height: height + 70, objectFit: 'cover', filter: 'blur(35px)', opacity: .65}} />
-        <Img src={src('poster_after.png')} style={{position: 'absolute', inset: 0, width, height, objectFit: 'contain'}} />
+      <Img src={src('poster_after.png')} style={{position: 'absolute', inset: -35, width: width + 70, height: height + 70, objectFit: 'cover', filter: 'blur(35px)', opacity: .65}} />
+      <Img src={src('poster_after.png')} style={{position: 'absolute', inset: 0, width, height, objectFit: 'contain'}} />
+      <div style={{position: 'absolute', inset: 0, background: '#27120e', clipPath: `inset(0 0 0 ${split * 100}%)`}}>
+        <Img src={src('poster_before.png')} style={{position: 'absolute', inset: -35, width: width + 70, height: height + 70, objectFit: 'cover', filter: 'blur(35px)', opacity: .65}} />
+        <Img src={src('poster_before.png')} style={{position: 'absolute', inset: 0, width, height, objectFit: 'contain'}} />
       </div>
     </div>
     <div style={{position: 'absolute', left: line - 3, top, width: 6, height, background: ivory, boxShadow: '0 0 18px #240b0b88'}} />
@@ -142,18 +175,31 @@ const Compare: React.FC<{f: number}> = ({f}) => {
   </Stage>;
 };
 
-const Subscribe: React.FC<{f: number}> = ({f}) => <Stage>
-  <div style={{opacity: 1 - move(f, 0, 46)}}><Poster after x={60} y={250} w={960} /></div>
-  <div style={{position: 'absolute', inset: 0, background: cream, opacity: move(f, 0, 46)}} />
-  <div style={{position: 'absolute', left: 84, top: 395, width: 810, fontSize: 67, lineHeight: 1.08, fontWeight: 800, letterSpacing: -3, opacity: move(f, 0, 34)}}>Хочешь больше<br />таких разборов?</div>
-  <div style={{position: 'absolute', left: 85, top: 650, width: 780, fontSize: 31, lineHeight: 1.24, fontWeight: 500, opacity: move(f, 35, 70)}}>Подписывайся — здесь о дизайне, маркетинге и продвижении бизнеса без воды.</div>
-  <div style={{position: 'absolute', left: 85, top: 837, width: 770, height: 3, background: wine, scale: `${move(f, 55, 88)} 1`, transformOrigin: 'left center'}} />
-  <div style={{position: 'absolute', left: 85, top: 912, width: 790, fontSize: 53, lineHeight: 1.1, fontWeight: 800, letterSpacing: -2, opacity: move(f, 70, 115)}}>ХОЧЕШЬ ГОТОВЫЙ<br />ПРОМПТ БЕЗ ИИ-СЛОПА?</div>
-  <div style={{position: 'absolute', left: 85, top: 1134, fontSize: 38, fontWeight: 700, opacity: move(f, 112, 155)}}>НАПИШИ В DIRECT</div>
-  <div style={{position: 'absolute', left: 85, top: 1235, padding: '20px 42px', borderRadius: 20, background: wine, color: ivory, boxShadow: '0 18px 35px #64181230', fontSize: 76, fontWeight: 800, letterSpacing: -3, opacity: move(f, 145, 190), translate: `0 ${move(f, 145, 190, 16, 0)}px`}}>ПРОМПТ ↗</div>
+const PromptGuide: React.FC<{f: number}> = ({f}) => <Stage dark>
+  <div style={{position: 'absolute', left: 80, top: 205, fontSize: 58, fontWeight: 800, letterSpacing: -2}}>ПРОМПТ — ЭТО ЧЁТКОЕ ТЗ</div>
+  <div style={{position: 'absolute', left: 80, top: 360, width: 910, height: 3, background: '#ffe500'}} />
+  {[
+    ['01', 'КОМПОЗИЦИЯ', 'Продукт — в центре кадра'],
+    ['02', 'ИЕРАРХИЯ', 'Один главный заголовок'],
+    ['03', 'ОГРАНИЧЕНИЯ', 'Без плашек, галочек и лишнего CTA'],
+  ].map(([number, title, detail], i) => <div key={number} style={{position: 'absolute', left: 80, top: 435 + i * 345, width: 910, height: 275, padding: '45px 50px', boxSizing: 'border-box', background: '#fff0df', color: wine, borderRadius: 18, boxShadow: '0 20px 35px #0004', opacity: move(f, [85, 205, 335][i], [115, 235, 365][i], .18, 1), translate: `0 ${move(f, [85, 205, 335][i], [115, 235, 365][i], 24, 0)}px`}}>
+    <div style={{fontSize: 38, fontWeight: 800, color: '#a4321b'}}>{number}</div>
+    <div style={{fontSize: 65, fontWeight: 800, letterSpacing: -2}}>{title}</div>
+    <div style={{fontSize: 31, fontWeight: 500}}>{detail}</div>
+  </div>)}
 </Stage>;
 
-const scenes = [Hook, Before, RemoveNoise, Hierarchy, ComposeAfter, After, Compare, Subscribe];
+const Subscribe: React.FC<{f: number}> = ({f}) => <Stage>
+  <div style={{position: 'absolute', inset: 0, background: cream}} />
+  <div style={{position: 'absolute', left: 85, top: 435, width: 800, fontSize: 76, lineHeight: 1.08, fontWeight: 800, letterSpacing: -3}}>ХОЧЕШЬ ГОТОВЫЙ<br />ПРОМПТ?</div>
+  <div style={{position: 'absolute', left: 85, top: 760, width: 770, height: 3, background: wine}} />
+  <div style={{position: 'absolute', left: 85, top: 840, fontSize: 43, fontWeight: 700, opacity: move(f, 125, 145)}}>НАПИШИ В DIRECT</div>
+  <div style={{position: 'absolute', left: 85, top: 990, padding: '23px 50px', borderRadius: 20, background: wine, color: ivory, boxShadow: '0 18px 35px #64181230', fontSize: 95, fontWeight: 800, letterSpacing: -3, opacity: move(f, 165, 190), translate: `0 ${move(f, 165, 190, 16, 0)}px`}}>ПРОМПТ ↗</div>
+  <div style={{position: 'absolute', left: 85, top: 1370, fontSize: 32, fontWeight: 600, opacity: .85}}>ХОЧЕШЬ БОЛЬШЕ РАЗБОРОВ?</div>
+  <div style={{position: 'absolute', left: 85, top: 1440, fontSize: 39, fontWeight: 800}}>ПОДПИСЫВАЙСЯ ↗</div>
+</Stage>;
+
+const scenes = [Hook, PosterReveal, Problems, RemoveNoise, Hierarchy, ComposeAfter, BrandStyle, Compare, PromptGuide, Subscribe];
 
 export const AIDesignRedesign: React.FC = () => {
   const frame = useCurrentFrame();

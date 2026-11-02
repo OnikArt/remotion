@@ -1,8 +1,27 @@
-// Cuts follow measured pauses in the unmodified 61.727313-second voiceover.
-// Scene 2 contains callouts; scene 7 is the before/after reveal.
+// Boundaries follow silencedetect on the unmodified ElevenLabs MP3 and the
+// supplied spoken script. Individual word onsets inside a phrase are estimated.
 export const FPS = 60;
 export const AUDIO_SECONDS = 61.727313;
 export const DURATION_FRAMES = Math.ceil(AUDIO_SECONDS * FPS);
-export const sceneStarts = [0, 3.4, 15.27, 21.7, 30, 39.14, 48.85, 55.3] as const;
+export const sceneStarts = [0, 3.408, 8.107, 15.264, 24.759, 32.443, 39.141, 44.072, 47.368, 56.33] as const;
 export const sceneFrames = sceneStarts.map((seconds) => Math.round(seconds * FPS));
 export const transitionFrames = 10;
+
+export const voiceMap = [
+  {start: 0, end: 3.408, spoken: 'Твой дизайн выглядит дешево. И вот почему.', visual: 'Редакционная обложка'},
+  {start: 3.408, end: 8.107, spoken: 'Попросил ИИ сделать красивый рекламный постер? А получил вот это.', visual: 'Исходный постер ИИ'},
+  {start: 8.107, end: 15.264, spoken: 'Кислотные цвета, зелёные галочки, куча текста. Всё кричит одновременно. Типичный ИИ-слоп.', visual: 'Последовательный разбор ошибок исходника'},
+  {start: 15.264, end: 17.336, spoken: 'Исправляем за четыре шага.', visual: 'Начало разбора по шагам'},
+  {start: 17.336, end: 19.285, spoken: 'Первое. Убираем мусор.', visual: 'Выделение избыточных элементов'},
+  {start: 19.285, end: 24.759, spoken: 'Банальные преимущества, лишние плашки и повторяющиеся призывы только отвлекают клиента.', visual: 'Последовательное удаление преимуществ, плашек и CTA'},
+  {start: 24.759, end: 27.288, spoken: 'Второе. Выстраиваем иерархию.', visual: 'Сопоставление исходника и нового порядка'},
+  {start: 27.288, end: 28.93, spoken: 'Один главный заголовок,', visual: 'Один крупный заголовок'},
+  {start: 28.93, end: 30.448, spoken: 'продукт в центре внимания,', visual: 'Стакан в центре композиции'},
+  {start: 30.448, end: 32.443, spoken: 'остальное — на втором плане.', visual: 'Второстепенные элементы уменьшены'},
+  {start: 32.443, end: 34.853, spoken: 'Третье. Исправляем композицию.', visual: 'Новый фон и ограниченная палитра'},
+  {start: 34.853, end: 39.141, spoken: 'Подбираем фон под продукт, ограничиваем палитру и добавляем глубину: стакан перекрывает часть заголовка.', visual: 'Сборка утверждённого постера'},
+  {start: 39.141, end: 44.072, spoken: 'Четвёртое. Добавляем фирменный стиль: аккуратный логотип, единые шрифты и отступы.', visual: 'Логотип, шрифты и отступы'},
+  {start: 44.072, end: 47.368, spoken: 'А теперь сравни.', visual: 'Вертикальное сравнение ПОСЛЕ слева и ДО справа'},
+  {start: 47.368, end: 56.33, spoken: 'И запомни: в промпте указывай не только стиль, но и композицию, иерархию и то, чего на изображении быть не должно.', visual: 'Три условия промпта'},
+  {start: 56.33, end: AUDIO_SECONDS, spoken: 'Хочешь готовый промпт без ИИ-слопа? Напиши в директ слово «ПРОМПТ» — и я отправлю тебе его.', visual: 'Direct CTA и напоминание подписаться'},
+] as const;
