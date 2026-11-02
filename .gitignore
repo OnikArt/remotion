@@ -1,0 +1,25 @@
+node_modules/
+build/
+dist/
+out/
+
+# Local secrets and machine settings
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.key
+
+# Temporary files and editor state
+tmp-*
+*.tmp
+*.log
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+.agents/
+.claude/
+skills-lock.json
