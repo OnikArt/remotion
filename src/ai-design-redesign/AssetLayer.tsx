@@ -16,6 +16,7 @@ const bounds = {
   'label_gentle_taste_before.png': {size: [1774, 887], box: [14, 17, 1755, 851]},
   'button_order.png': {size: [2135, 736], box: [37, 171, 2099, 582]},
   'features_after.png': {size: [2135, 736], box: [65, 90, 2075, 634]},
+  'features_before.png': {size: [1536, 1024], box: [75, 50, 1460, 930]},
   'text_refreshing_lightness.png': {size: [2135, 736], box: [202, 197, 1931, 560]},
   'cup.png': {size: [1049, 1500], box: [112, 19, 958, 1455]},
 } as const;
